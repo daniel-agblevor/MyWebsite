@@ -53,7 +53,7 @@ Static asset changes are cache-busted by updating their query-string version in 
 
 Secrets must be rotated in Supabase, Resend, and Render first, then replaced in the Render environment. Redeploy and confirm authentication/contact behavior before revoking an overlapping old credential where the provider permits overlap. Never place server credentials in `frontend/`.
 
-Create SUPABASE_MEDIA_BUCKET as a public site-media bucket with a 5 MB object limit and JPEG, PNG, WebP, and AVIF input types. Reads are public; writes remain backend-only through SUPABASE_SECRET_KEY. Do not add anonymous upload policies. The legacy SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY names remain runtime fallbacks only for a staged key rotation.
+Create `SUPABASE_MEDIA_BUCKET` as a public `site-media` bucket with a 5 MB object limit and JPEG, PNG, WebP, and AVIF input types. Reads are public; writes remain backend-only through `SUPABASE_SECRET_KEY`. Do not add anonymous upload policies. The legacy `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` names remain runtime fallbacks only for a staged key rotation.
 
 ## Database and content model
 

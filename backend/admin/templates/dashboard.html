@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Leads · Site administration{% endblock %}
+{% block content %}
+<header class="page-heading"><div><p class="eyebrow">Operations</p><h1>Contact inquiries</h1></div><p>{{ leads.total }} total</p></header>
+<section class="panel" aria-labelledby="features-title">
+  <h2 id="features-title">Public sections</h2>
+  <div class="toggle-grid">
+    {% for name in ['services','portfolio','case_studies','testimonials','blog'] %}
+    <form method="post" action="{{ url_for('admin_pages.update_feature', name=name) }}" class="toggle-row">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="is_enabled" value="{{ 'false' if flags.get(name, false) else 'true' }}">
+      <span>{{ name.replace('_', ' ').title() }}</span>
+      <button class="status {{ 'on' if flags.get(name, false) else 'off' }}" type="submit">{{ 'On' if flags.get(name, false) else 'Off' }}</button>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+<div class="content-links" aria-label="Content management">
+  {% for kind in ['services','portfolio','case-studies','testimonials','blog','slideshow','content-blocks'] %}
+  <a href="{{ url_for('admin_pages.profile') }}">Site Profile</a>
+  <a href="{{ url_for('admin_pages.content', kind=kind) }}">{{ kind.replace('-', ' ').title() }}</a>
+  {% endfor %}
+</div>
+<form method="get" class="filters"><label for="status">Filter status</label><select id="status" name="status" onchange="this.form.submit()"><option value="">All</option>{% for option in ['new','contacted','closed'] %}<option value="{{ option }}" {{ 'selected' if status == option }}>{{ option.title() }}</option>{% endfor %}</select></form>
+<div class="table-wrap"><table><thead><tr><th>Name</th><th>Service</th><th>Received</th><th>Status</th><th>Message</th></tr></thead><tbody>
+{% for lead in leads.items %}<tr><td><strong>{{ lead.name }}</strong><br><a href="mailto:{{ lead.email }}">{{ lead.email }}</a>{% if lead.phone %}<br>{{ lead.phone }}{% endif %}</td><td>{{ lead.service_interest }}</td><td>{{ lead.created_at.strftime('%Y-%m-%d %H:%M') }}</td><td><form method="post" action="{{ url_for('admin_pages.update_lead', lead_id=lead.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><select name="status" onchange="this.form.submit()">{% for option in ['new','contacted','closed'] %}<option {{ 'selected' if lead.status == option }}>{{ option }}</option>{% endfor %}</select></form></td><td class="message-cell">{{ lead.message }}</td></tr>
+{% else %}<tr><td colspan="5">No inquiries match this view.</td></tr>{% endfor %}
+</tbody></table></div>
+{% if leads.pages > 1 %}<nav class="pagination" aria-label="Lead pages">{% for number in leads.iter_pages() %}{% if number %}<a href="?page={{ number }}&status={{ status }}" {{ 'aria-current=page' if number == leads.page }}>{{ number }}</a>{% else %}<span>…</span>{% endif %}{% endfor %}</nav>{% endif %}
+{% endblock %}
+

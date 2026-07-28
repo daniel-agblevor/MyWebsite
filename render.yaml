@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hr-systems-consulting-api
+    runtime: python
+    plan: starter
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && flask --app app:create_app db upgrade
+    startCommand: gunicorn --bind 0.0.0.0:$PORT "app:create_app()"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.4
+      - key: FLASK_ENV
+        value: production
+

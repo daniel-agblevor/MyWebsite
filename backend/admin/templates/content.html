@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ kind.replace('-', ' ').title() }} · Site administration{% endblock %}
+{% block content %}
+<header class="page-heading"><div><p class="eyebrow">Content management</p><h1>{{ kind.replace('-', ' ').title() }}</h1></div></header>
+<p class="help">Enter only the documented fields as JSON. Public claims remain unpublished until explicitly approved.</p>
+<section class="panel"><h2>Create item</h2><form method="post" class="stack"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="new-payload">Content fields (JSON)</label><textarea id="new-payload" name="payload" rows="9" spellcheck="false">{}</textarea><button class="button" type="submit">Create item</button></form></section>
+<div class="item-list">
+{% for item in items %}<article class="panel"><h2>Item {{ item.id }}</h2><form method="post" action="{{ url_for('admin_pages.edit_content', kind=kind, item_id=item.id) }}" class="stack"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="payload-{{ item.id }}">Editable fields (JSON)</label><textarea id="payload-{{ item.id }}" name="payload" rows="12" spellcheck="false">{{ item_payloads[item.id] | tojson(indent=2) }}</textarea><div class="actions"><button class="button" type="submit" name="action" value="update">Save changes</button><button class="danger" type="submit" name="action" value="delete" onclick="return confirm('Delete this content item?')">Delete</button></div></form></article>
+{% else %}<div class="panel empty">No content has been added yet.</div>{% endfor %}
+</div>
+{% endblock %}
+

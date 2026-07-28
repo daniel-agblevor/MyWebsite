@@ -1,0 +1,29 @@
+﻿{% extends "base.html" %}
+{% block title %}Site profile · Site administration{% endblock %}
+{% block content %}
+<header class="page-heading"><div><p class="eyebrow">Content management</p><h1>Site profile</h1></div></header>
+<section class="panel">
+  <form method="post" enctype="multipart/form-data" class="stack">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label for="display_name">Display name</label>
+    <input id="display_name" name="display_name" maxlength="160" value="{{ profile.display_name or '' }}">
+    <label for="specialty">Specialty</label>
+    <input id="specialty" name="specialty" maxlength="200" value="{{ profile.specialty or '' }}">
+    <label for="location">Location</label>
+    <input id="location" name="location" maxlength="160" value="{{ profile.location or '' }}">
+    <label for="phone">Public phone number</label>
+    <input id="phone" name="phone" type="tel" maxlength="40" value="{{ profile.phone or '' }}">
+    <label for="email">Public email address</label>
+    <input id="email" name="email" type="email" maxlength="254" value="{{ profile.email or '' }}">
+    <label for="profile_photo_url">Existing profile image URL</label>
+    <input id="profile_photo_url" name="profile_photo_url" type="url" value="{{ profile.profile_photo_url or '' }}">
+    <label for="profile_image">Or upload a replacement image (JPEG, PNG, WebP, or AVIF; 5 MB maximum)</label>
+    <input id="profile_image" name="profile_image" type="file" accept="image/jpeg,image/png,image/webp,image/avif">
+    <label for="intro_video_url">YouTube introduction URL</label>
+    <input id="intro_video_url" name="intro_video_url" type="url" value="{{ profile.intro_video_url or '' }}">
+    <button class="button" type="submit">Save profile</button>
+  </form>
+</section>
+{% endblock %}
+
+
