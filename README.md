@@ -117,4 +117,5 @@ Create administrators directly in Supabase Auth using email/password. Visit the 
 See [CONTENT_CHECKLIST.md](CONTENT_CHECKLIST.md). No KPI, testimonial, client, biography, project outcome, or credential is seeded. This is intentional: public proof must be real and owner-approved.
 
 #   M y W e b s i t e  
+ #   M y W e b s i t e  
  
